@@ -1,0 +1,10 @@
+{
+	"EXPECTED_ROI":"0.001",
+	"CHAINS_TO_WORK_ON":[
+					["btc","eth","ltc"],
+					["btc","eth","xrp"],
+					["btc","eth","xmr"],
+					["btc","usdt","eth"]
+						] 
+
+}
