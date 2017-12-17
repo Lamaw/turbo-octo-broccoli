@@ -26,11 +26,11 @@ class Processor(object):
 		if res2 > self.target:
 			self.last_profit=res2
 			return res2
+		self.last_profit=max(res1,res2)
 		return None
 
-	def get_profitability(self, result):
-		profit = ((result * (1-self.market_fee)**3) - 1)*100
-		return profit
+	def get_profitability(self):
+		return self.last_profit * (1-self.market_fee)**3
 
 	def _read_expected_roi(self):
 		with open(constants.CONF_FILE) as json_data:

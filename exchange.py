@@ -40,9 +40,6 @@ class Poloniex(Exchange):
 		resp = self.get(url)
 		for pair in pairs:
 			tickers[pair]= self._get_ticker(resp, pair)
-
-		print tickers
-		
 		return tickers
 
 	def _get_ticker(self, http_resp, pair):

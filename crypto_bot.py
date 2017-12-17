@@ -1,10 +1,14 @@
-from exchange import Bittrex, Poloniex
-from processor import Processor
 import datetime
 import sys
+import threading
+import json
+
+from exchange import Bittrex, Poloniex
+from processor import Processor
+import constants
 
 
-class CryptoBot(object):
+class CryptoBot(threading.Thread):
 	"""The main instance, managing the whole process"""
 	def __init__(self, exchange, pairs):
 		super(CryptoBot, self).__init__()
@@ -13,6 +17,7 @@ class CryptoBot(object):
 		self.nb_profitable_tx=0
 		self.exchange = self.create_exchange(exchange)
 		self.processor = Processor()
+		self.id="["+exchange.upper()+" : "+pairs[0][0]+"-"+pairs[2][0]+"-"+pairs[1][1]+"]"
 		if self.pairs is None:
 			self.get_pairs_from_conf()
 
@@ -26,19 +31,29 @@ class CryptoBot(object):
 	def get_pairs_from_conf(self):
 		pass
 
-	def loop(self):
+	def run(self):
+		self.loop(10)
+
+	def loop(self, cycles=None, trace=True):
 		stop = False
-		while (not stop):
-			tickers = self.exchange.get_tickers_for_pairs(self.pairs)
-			self.nb_assessed_chains+=1
-			profit = self.processor.is_profitable(self.pairs, tickers, self.exchange.market_fee)
-			if profit:
-				self.nb_profitable_tx+=1
-				print "Found one transaction profitable for", self.processor.get_profitability(profit) , "%%. It is the", self.nb_profitable_tx,"th since the beginning."
-			else:
-				print self.nb_assessed_chains , "unprofitable chain assessed."
-
-
+		looped = 0
+		try:
+			while (not stop):
+				tickers = self.exchange.get_tickers_for_pairs(self.pairs)
+				self.nb_assessed_chains+=1
+				profit = self.processor.is_profitable(self.pairs, tickers, self.exchange.market_fee)
+				if profit:
+					self.nb_profitable_tx+=1
+					if trace:
+						print self.id, "Found one transaction profitable for", self.processor.get_profitability() , "%. It is the", self.nb_profitable_tx,"th since the beginning."
+				elif trace:
+					print self.id, self.nb_assessed_chains , "unprofitable chain assessed. (gain : ", self.processor.get_profitability()-1, "%)"
+				looped+=1
+				if cycles and (looped >= cycles):
+					stop=True
+			return True
+		except  Exception as e:
+			return False
 ##########  MAIN  ##############
 
 if __name__ == "__main__":
@@ -48,13 +63,25 @@ if __name__ == "__main__":
 		pairs.append((sys.argv[2],sys.argv[3]))
 		pairs.append((sys.argv[2],sys.argv[4]))
 		pairs.append((sys.argv[3],sys.argv[4]))
-		_bot = CryptoBot(exchange, pairs)
-		_bot.loop()
+		bot = CryptoBot(exchange, pairs)
+		bot.loop()
 
 	elif len(sys.argv) is 2: # cmd line of the form : python crypto_bot.py {exchange}
-		pairs = None
-		_bot = CryptoBot(exchange, pairs)
-		_bot.loop
+		bots = list()
+		with open(constants.CONF_FILE) as json_data:
+			data = json.load(json_data)
+			json_data.close()
+		chain_dict = data['CHAINS_TO_WORK_ON']
+		for chain in chain_dict:
+			pairs = list()
+			pairs.append((chain[0],chain[1]))
+			pairs.append((chain[0],chain[2]))
+			pairs.append((chain[1],chain[2]))
+			print pairs
+			bot = CryptoBot(exchange, pairs)
+			bots.append(bot)
+		for bot in bots:
+			bot.start()
 
 	else:
 		print "Wrong arguments"
