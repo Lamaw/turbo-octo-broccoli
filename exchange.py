@@ -51,28 +51,23 @@ class Poloniex(Exchange):
 			return None
 
 
+
 class Bitfinex(Exchange):
 	def __init__(self):
 		super(Bitfinex, self).__init__()
 		self.market_fee=0.0025
 
+
 	def get_tickers_for_pairs(self, pairs):
-		pass
-		# tickers = dict()
-		# url = "https://poloniex.com/public?command=returnTicker"
-		# resp = self.get(url)
-		# for pair in pairs:
-		# 	tickers[pair]= self._get_ticker(resp, pair)
+		tickers = dict()
+		for pair in pairs:
+			url = "https://api.bitfinex.com/v1/book/" + pair[0] + pair[1] + "?limit_bids=1&limit_asks=1"
+			tickers[pair]= self._get_ticker(self.get(url))
+		return tickers
 
-		# print tickers
-		
-		# return tickers
-
-	def _get_ticker(self, http_resp, pair):
-		pass
-		# json_object = json.loads(http_resp.text)
-		# try:
-		# 	str_pair = pair[0].upper() + "_" + pair[1].upper()
-		# 	return (json_object[str_pair]["highestBid"], json_object[str_pair]["lowestAsk"])
-		# except Exception as e:
-		# 	return None
+	def _get_ticker(self, http_resp):
+		json_object = json.loads(http_resp.text)
+		try:
+			return (json_object["bids"][0]["price"], json_object["asks"][0]["price"])
+		except Exception as e:
+			return None

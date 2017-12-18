@@ -3,7 +3,7 @@ import sys
 import threading
 import json
 
-from exchange import Bittrex, Poloniex
+from exchange import Bittrex, Poloniex, Bitfinex
 from processor import Processor
 import constants
 
@@ -26,6 +26,8 @@ class CryptoBot(threading.Thread):
 			return Bittrex()
 		if (name == 'poloniex'):
 			return Poloniex()
+		if (name == 'bitfinex'):
+			return Bitfinex()
 		return None
 
 	def get_pairs_from_conf(self):
