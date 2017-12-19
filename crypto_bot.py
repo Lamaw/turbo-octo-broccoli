@@ -16,19 +16,23 @@ class CryptoBot(threading.Thread):
 		self.nb_assessed_chains=0
 		self.nb_profitable_tx=0
 		self.exchange = self.create_exchange(exchange)
+		print self.exchange
 		self.processor = Processor()
 		self.id="["+exchange.upper()+" : "+pairs[0][0]+"-"+pairs[2][0]+"-"+pairs[1][1]+"]"
 		if self.pairs is None:
 			self.get_pairs_from_conf()
 
 	def create_exchange(self, name):
-		if (name == 'bittrex'):
-			return Bittrex()
-		if (name == 'poloniex'):
-			return Poloniex()
-		if (name == 'bitfinex'):
-			return Bitfinex()
-		return None
+		try:
+			classname = constants.SUPPORTED_EXCHANGES[name]
+			if classname:
+				get_class = lambda x: globals()[x]
+				return get_class(classname)()
+		except Exception:
+			exchange_list =""
+			for key in constants.SUPPORTED_EXCHANGES:
+				exchange_list += key + " - " 
+			raise ValueError("Exchange name should be one of these : " + exchange_list)
 
 	def get_pairs_from_conf(self):
 		pass
