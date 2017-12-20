@@ -94,6 +94,100 @@ BITTREX_SPECIFIC_NAMES = {
 				"bch":"bcc"
 }
 
+BITTREX_REF_CURRENCIES = {
+				"usdt":0,
+				"btc":1,
+				"eth":2
+}
+
+BITTREX_PAIRS = {
+			("btc","eth"):[
+							"ltc",
+							"xrp",
+							"bcc",
+							"omg",
+							"neo",
+							"etc",
+							"ada",
+							"qtum",
+							"xlm",
+							"xem",
+							"xmr",
+							"dash",
+							"zec",
+							"waves",
+							"btg",
+							"mco",
+							"pay",
+							"salt",
+							"strat",
+							"bat",
+							"ant",
+							"cvc",
+							"mana",
+							"gnt",
+							"ptoy",
+							"bnt",
+							"rlc",
+							"powr",
+							"sngls",
+							"dgd",
+							"snt",
+							"sc",
+							"adx",
+							"trst",
+							"cfi",
+							"gup",
+							"rcn",
+							"storj",
+							"rep",
+							"dgb",
+							"fun",
+							"hmq",
+							"mtl",
+							"gno",
+							"eng",
+							"wings",
+							"dnt",
+							"fct",
+							"nmr",
+							"qrl",
+							"tix",
+							"myst",
+							"lun",
+							"vib",
+							"crb",
+							"lgb",
+							"adt",
+							"1st"
+							],
+			("usdt","btc"):[
+							"ltc",
+							"eth",
+							"xrp",
+							"bcc",
+							"etc",
+							"neo",
+							"btg",
+							"omg",
+							"dash",
+							"zec",
+							"xmr"
+							],
+			("usdt","eth"):[
+							"ltc",
+							"xrp",
+							"bcc",
+							"etc",
+							"neo",
+							"btg",
+							"omg",
+							"dash",
+							"zec",
+							"xmr"
+							]
+}
+
 ### POLONIEX CONFIGURATION ###
 
 POLONIEX_SPECIFIC_NAME = {
