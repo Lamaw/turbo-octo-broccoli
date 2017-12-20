@@ -2,11 +2,11 @@ import datetime
 import sys
 import threading
 import json
+import logging
 
 from exchange import Bittrex, Poloniex, Bitfinex, Kraken
 from processor import Processor
 import constants
-
 
 class CryptoBot(threading.Thread):
 	"""
@@ -17,10 +17,11 @@ class CryptoBot(threading.Thread):
 	exchange: 	string
 	pairs:        list((string,string))
 	[OPT]chain:   list(string)"""
-	def __init__(self, exchange, pairs, chain=None):
+	def __init__(self, exchange, pairs=None, chain=None):
 		super(CryptoBot, self).__init__()
-		self.nb_assessed_chains=0
+		self.nb_unprofitable_chains=0
 		self.nb_profitable_tx=0
+		self.long_profitable=0
 		self.exchange = self.create_exchange(exchange)
 		self.processor = Processor()
 		if chain and len(chain) == 3:
@@ -29,6 +30,16 @@ class CryptoBot(threading.Thread):
 			self.pairs = pairs
 
 		self.id="["+exchange.upper()+" : "+self.pairs[0][0]+"-"+self.pairs[2][0]+"-"+self.pairs[1][1]+"]"
+		self.file_name= exchange.upper()+"_"+self.pairs[0][0]+"_"+self.pairs[2][0]+"_"+self.pairs[1][1]
+		self.logger = logging.getLogger(__name__)
+		self.logger.setLevel(logging.INFO)
+		handler = logging.FileHandler(self.file_name+'.log')
+		handler.setLevel(logging.INFO)
+
+		formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+		handler.setFormatter(formatter)
+
+		self.logger.addHandler(handler)
 
 	"""
 	Instanciate an Exchange object given an exchange name:
@@ -63,17 +74,29 @@ class CryptoBot(threading.Thread):
 	def loop(self, cycles=None, trace=True):
 		stop = False
 		looped = 0
+		nb_last_tx_profitable=0
+		consecutive_profitable=list()
 		try:
 			while (not stop):
 				tickers = self.exchange.get_tickers_for_pairs(self.pairs)
-				self.nb_assessed_chains+=1
 				profit = self.processor.is_profitable(self.pairs, tickers, self.exchange.market_fee)
 				if profit:
 					self.nb_profitable_tx+=1
 					if trace:
-						print self.id, "Found one transaction profitable for", self.processor.get_profitability() , "%. It is the", self.nb_profitable_tx,"th since the beginning."
-				elif trace:
-					print self.id, self.nb_assessed_chains , "unprofitable chain assessed. (gain : ", self.processor.get_profitability()-1, "%)"
+						msg = self.id, "Found one transaction profitable for", self.processor.get_profitability() , "%. It is the", self.nb_profitable_tx,"th since the beginning."
+						self.logger.info(msg)
+					nb_last_tx_profitable+=1
+				else:
+					self.nb_unprofitable_chains+=1
+					if nb_last_tx_profitable > 0:
+						consecutive_profitable.append(nb_last_tx_profitable)
+					nb_last_tx_profitable =0
+					if trace:	
+						msg = self.id, self.nb_unprofitable_chains , "unprofitable chain assessed. (gain : ", self.processor.get_profitability()-1, "%)"
+						self.logger.info(msg)
+
+				msg = self.id, self.nb_unprofitable_chains + self.nb_profitable_tx , "chains assessed : ", self.nb_profitable_tx , "were profitable => here is a list of number of consecutive profitable transaction", consecutive_profitable
+				self.logger.info(msg)
 				looped+=1
 				if cycles and (looped >= cycles):
 					stop=True

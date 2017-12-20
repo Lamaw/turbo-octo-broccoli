@@ -36,6 +36,7 @@ SUPPORTED_CURRENCIES={
 						"gnt":"Golem",
 						"gup":"Guppy",
 						"hmq":"Humaniq",
+						"icn":"Iconomy",
 						"iot":"Iota",
 						"lgd":"Legends",
 						"lsk":"Lisk",
@@ -43,6 +44,7 @@ SUPPORTED_CURRENCIES={
 						"lun":"Lunyr",
 						"maid":"MaidSafeCoin",
 						"mana":"Decentraland",
+						"mln":"Melon",
 						"myst":"Mysterium",
 						"mco":"Monaco",
 						"mtl":"Metal",
@@ -319,4 +321,23 @@ BITFINEX_PAIRS = {
 							"qsh",
 							"yyw"
 							]
+}
+
+
+### KRAKEN CONFIGURATION ###
+
+KRAKEN_SPECIFIC_NAMES = {
+				"dash":"dsh",
+				"qtum":"qtm"
+}
+
+KRAKEN_REF_CURRENCIES = {
+				"usd":0,
+				"btc":1,
+				"eur":1,
+				"eth":2
+}
+
+KRAKEN_PAIRS = {
+	
 }
