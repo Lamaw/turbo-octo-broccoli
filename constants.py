@@ -194,9 +194,128 @@ POLONIEX_SPECIFIC_NAME = {
 				"xlm":"str"
 }
 
+BITTREX_REF_CURRENCIES = {
+				"usdt":0,
+				"btc":1,
+				"eth":2,
+				"xmr":2
+}
+
+BITTREX_PAIRS = {
+			("btc","eth"):[
+							"bch",
+							"cvc",
+							"etc",
+							"gas",
+							"gno",
+							"gnt",
+							"lsk",
+							"omg",
+							"steem",
+							"zec",
+							"zrx"
+							],
+			("btc","xrm"):[
+							"bcn",
+							"blk",
+							"btcd",
+							"dash",
+							"ltc",
+							"maid",
+							"nxt",
+							"zec"
+							],
+			("usdt","btc"):[
+							"bch",
+							"dash",
+							"etc",
+							"eth",
+							"ltc",
+							"nxt",
+							"rep",
+							"str",
+							"xmr",
+							"xrp",
+							"zec"
+							],
+			("usdt","eth"):[
+							"bch",
+							"etc",
+							"rep",
+							"zec"
+							],
+			("usdt","xrm"):[
+							"dash",
+							"ltc",
+							"nxt",
+							"zec"
+							]
+			
+
+
+}
 ### BITFINEX CONFIGURATION ###
 
 BITFINEX_SPECIFIC_NAME = {
 				"dash":"dsh",
 				"qtum":"qtm"
+}
+
+BITTREX_REF_CURRENCIES = {
+				"usd":0,
+				"btc":1,
+				"eth":2
+}
+
+BITTREX_PAIRS = {
+			("btc","eth"):[
+							"iot",
+							"eos",
+							"san",
+							"omg",
+							"bch",
+							"neo",
+							"etp",
+							"edo",
+							"qtm",
+							"avt",
+							"qsh",
+							"yyw"
+							],
+			("usd","btc"):[
+							"ltc",
+							"eth",
+							"etc",
+							"zec",
+							"xmr",
+							"dsh",
+							"xrp",
+							"iot",
+							"eos",
+							"san",
+							"omg",
+							"bch",
+							"neo",
+							"etp",
+							"edo",
+							"qtm",
+							"avt",
+							"btg",
+							"qsh",
+							"yyw"
+							],
+			("usd","eth"):[
+							"iot",
+							"eos",
+							"san",
+							"omg",
+							"bch",
+							"neo",
+							"etp",
+							"edo",
+							"qtm",
+							"avt",
+							"qsh",
+							"yyw"
+							]
 }
