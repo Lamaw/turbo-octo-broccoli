@@ -9,7 +9,14 @@ import constants
 
 
 class CryptoBot(threading.Thread):
-	"""The main instance, managing the whole process"""
+	"""
+	CryptoBot constructor: A CryptoBot is the main worker of the prokect.
+	Given an exchange and 3 pair of chained currencies, it loops on
+	the order book of these currencies until a favorable trade is detected.
+	INPUTS: 
+	exchange: 	string
+	pairs:        list((string,string))
+	[OPT]chain:   list(string)"""
 	def __init__(self, exchange, pairs, chain=None):
 		super(CryptoBot, self).__init__()
 		self.nb_assessed_chains=0
@@ -23,6 +30,10 @@ class CryptoBot(threading.Thread):
 
 		self.id="["+exchange.upper()+" : "+self.pairs[0][0]+"-"+self.pairs[2][0]+"-"+self.pairs[1][1]+"]"
 
+	"""
+	Instanciate an Exchange object given an exchange name:
+	INPUTS:
+	name:     string"""
 	def create_exchange(self, name):
 		try:
 			classname = constants.SUPPORTED_EXCHANGES[name]
@@ -35,9 +46,20 @@ class CryptoBot(threading.Thread):
 				exchange_list += key + " - " 
 			raise ValueError("\nExchange name should be one of these : " + exchange_list)
 
+
+	"""
+	Override the run() method of Tthreading.Thread class
+	this method is used to launch the main working method (loop() )
+	in a new thread, in order to make several bots work in parallel"""
 	def run(self):
 		self.loop(10)
 
+	"""
+	Main working method, it keeps reading the order book of given pairs of currencies
+	and analyse opportunities to make profitable trades
+	INPUTS:
+	[OPT]cycles:     int        => a number of loop to do before stoping. (default: endless)
+	[OPT]trace:      boolean    => should traces be printed (default: True)"""
 	def loop(self, cycles=None, trace=True):
 		stop = False
 		looped = 0
