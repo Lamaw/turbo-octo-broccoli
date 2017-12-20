@@ -190,18 +190,18 @@ BITTREX_PAIRS = {
 
 ### POLONIEX CONFIGURATION ###
 
-POLONIEX_SPECIFIC_NAME = {
+POLONIEX_SPECIFIC_NAMES = {
 				"xlm":"str"
 }
 
-BITTREX_REF_CURRENCIES = {
+POLONIEX_REF_CURRENCIES = {
 				"usdt":0,
 				"btc":1,
 				"eth":2,
 				"xmr":2
 }
 
-BITTREX_PAIRS = {
+POLONIEX_PAIRS = {
 			("btc","eth"):[
 							"bch",
 							"cvc",
@@ -256,18 +256,18 @@ BITTREX_PAIRS = {
 }
 ### BITFINEX CONFIGURATION ###
 
-BITFINEX_SPECIFIC_NAME = {
+BITFINEX_SPECIFIC_NAMES = {
 				"dash":"dsh",
 				"qtum":"qtm"
 }
 
-BITTREX_REF_CURRENCIES = {
+BITFINEX_REF_CURRENCIES = {
 				"usd":0,
 				"btc":1,
 				"eth":2
 }
 
-BITTREX_PAIRS = {
+BITFINEX_PAIRS = {
 			("btc","eth"):[
 							"iot",
 							"eos",

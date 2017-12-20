@@ -10,17 +10,18 @@ import constants
 
 class CryptoBot(threading.Thread):
 	"""The main instance, managing the whole process"""
-	def __init__(self, exchange, pairs):
+	def __init__(self, exchange, pairs, chain=None):
 		super(CryptoBot, self).__init__()
-		self.pairs = pairs
 		self.nb_assessed_chains=0
 		self.nb_profitable_tx=0
 		self.exchange = self.create_exchange(exchange)
-		print self.exchange
 		self.processor = Processor()
-		self.id="["+exchange.upper()+" : "+pairs[0][0]+"-"+pairs[2][0]+"-"+pairs[1][1]+"]"
-		if self.pairs is None:
-			self.get_pairs_from_conf()
+		if chain and len(chain) == 3:
+			self.pairs = self.exchange.make_pairs(chain)
+		else:
+			self.pairs = pairs
+
+		self.id="["+exchange.upper()+" : "+self.pairs[0][0]+"-"+self.pairs[2][0]+"-"+self.pairs[1][1]+"]"
 
 	def create_exchange(self, name):
 		try:
@@ -28,14 +29,11 @@ class CryptoBot(threading.Thread):
 			if classname:
 				get_class = lambda x: globals()[x]
 				return get_class(classname)()
-		except Exception:
+		except Exception as e:
 			exchange_list =""
 			for key in constants.SUPPORTED_EXCHANGES:
 				exchange_list += key + " - " 
-			raise ValueError("Exchange name should be one of these : " + exchange_list)
-
-	def get_pairs_from_conf(self):
-		pass
+			raise ValueError("\nExchange name should be one of these : " + exchange_list)
 
 	def run(self):
 		self.loop(10)
@@ -60,6 +58,7 @@ class CryptoBot(threading.Thread):
 			return True
 		except  Exception as e:
 			return False
+
 ##########  MAIN  ##############
 
 if __name__ == "__main__":
@@ -69,7 +68,11 @@ if __name__ == "__main__":
 		pairs.append((sys.argv[2],sys.argv[3]))
 		pairs.append((sys.argv[2],sys.argv[4]))
 		pairs.append((sys.argv[3],sys.argv[4]))
-		bot = CryptoBot(exchange, pairs)
+		chain = list()
+		chain.append(sys.argv[2])
+		chain.append(sys.argv[3])
+		chain.append(sys.argv[4])
+		bot = CryptoBot(exchange, pairs, chain)
 		bot.loop()
 
 	elif len(sys.argv) is 2: # cmd line of the form : python crypto_bot.py {exchange}
