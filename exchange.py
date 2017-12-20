@@ -131,3 +131,25 @@ class Bitfinex(Exchange):
 			return (json_object["bids"][0]["price"], json_object["asks"][0]["price"])
 		except Exception as e:
 			return None
+
+
+
+class Kraken(Exchange):
+	def __init__(self):
+		super(Kraken, self).__init__()
+		self.market_fee=0.0026
+
+
+	def get_tickers_for_pairs(self, pairs):
+		tickers = dict()
+		for pair in pairs:
+			url = "https://api.kraken.com/0/public/Ticker?pair=" + pair[0] + pair[1] + pair[2]
+			tickers[pair]= self._get_ticker(self.get(url))
+		return tickers
+
+	def _get_ticker(self, http_resp):
+		json_object = json.loads(http_resp.text)
+		try:
+			return (json_object["result"][str_pair]["b"], json_object["result"][str_pair]["a"])
+		except Exception as e:
+			return None			

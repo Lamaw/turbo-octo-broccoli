@@ -85,7 +85,8 @@ SUPPORTED_CURRENCIES={
 SUPPORTED_EXCHANGES = {
 					"bitfinex":"Bitfinex",
 					"bittrex":"Bittrex",
-					"poloniex":"Poloniex"
+					"poloniex":"Poloniex",
+					"kraken":"Kraken"
 					}
 
 ### BITTREX CONFIGURATION ###

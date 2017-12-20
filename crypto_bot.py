@@ -3,7 +3,7 @@ import sys
 import threading
 import json
 
-from exchange import Bittrex, Poloniex, Bitfinex
+from exchange import Bittrex, Poloniex, Bitfinex, Kraken
 from processor import Processor
 import constants
 
