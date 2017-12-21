@@ -1,7 +1,8 @@
 import constants
 import json
+from utils import BotLogger
 
-class Processor(object):
+class Processor(BotLogger):
 	"""docstring for Processor"""
 	def __init__(self):
 		super(Processor, self).__init__()
@@ -18,7 +19,7 @@ class Processor(object):
 			res1 = float(tickers[pairs[0]][0]) * float(tickers[pairs[2]][0]) / float(tickers[pairs[1]][1])
 			res2 = float(tickers[pairs[1]][0]) / (float(tickers[pairs[0]][1]) * float(tickers[pairs[2]][1]))
 		except Exception as e:
-			print "Error in profitability processing, could not read tickers values."
+			self.logger.error("Error in profitability processing, could not read tickers values.")
 			return None
 		if res1 > self.target:
 			self.last_profit=res1

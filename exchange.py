@@ -1,11 +1,13 @@
 import requests
 import json
 import constants
+from utils import BotLogger
 
-class Exchange(object):
+class Exchange(BotLogger):
 	"""docstring for Exchange"""
 	def __init__(self):
 		super(Exchange, self).__init__()
+		self.logger.info("test to log from exchange.py")
 
 
 	def get(self, url):
