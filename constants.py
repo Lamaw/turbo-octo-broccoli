@@ -23,6 +23,7 @@ SUPPORTED_CURRENCIES={
 						"dgb":"Digibyte",
 						"dgd":"DigixDAO",
 						"dnt":"District0x",
+						"doge":"Dogecoin",
 						"edo":"Eidoo",
 						"eng":"Enigma",
 						"eos":"EOS",
@@ -327,17 +328,47 @@ BITFINEX_PAIRS = {
 ### KRAKEN CONFIGURATION ###
 
 KRAKEN_SPECIFIC_NAMES = {
-				"dash":"dsh",
-				"qtum":"qtm"
+				"btc":"xbt",
+				"xdg":"doge",
 }
 
 KRAKEN_REF_CURRENCIES = {
 				"usd":0,
 				"btc":1,
-				"eur":1,
 				"eth":2
 }
 
 KRAKEN_PAIRS = {
-	
+			("btc","eth"):[
+							"eos",
+							"etc",
+							"gno",
+							"icn",
+							"mln",
+							"rep",
+							"cad",
+							"gbp",
+							"jpy"
+							],
+			("usd","btc"):[
+							"bch",
+							"dash",
+							"etc",
+							"eth",
+							"ltc",
+							"xmr",
+							"xrp",
+							"zec"
+							],
+			("usd","eth"):[
+							"eos",
+							"etc",
+							"gno",
+							"icn",
+							"mln",
+							"rep",
+							"cad",
+							"gbp",
+							"jpy"
+							]
 }
